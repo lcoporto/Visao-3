@@ -1,0 +1,12 @@
+{
+  "name": "AutoStock Solutions",
+  "description": "Plataforma inteligente de gestão de inventário, ordens de serviço e cotação automatizada de peças para oficinas mecânicas.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "AI Vision Part Identification",
+    "Real-time Inventory Tracking",
+    "Automated Market Quoting"
+  ]
+}

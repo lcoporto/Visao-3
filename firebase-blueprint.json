@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "Customer": {
+      "title": "Customer",
+      "description": "Details of a vehicle owner.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone"]
+    },
+    "Part": {
+      "title": "Part",
+      "description": "An automotive part in the inventory.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "sku": { "type": "string" },
+        "category": { "type": "string" },
+        "brand": { "type": "string" },
+        "compatibility": { "type": "array", "items": { "type": "string" } },
+        "quantity": { "type": "integer" },
+        "minQuantity": { "type": "integer" },
+        "price": { "type": "number" },
+        "marketPrices": {
+          "type": "object",
+          "properties": {
+            "min": { "type": "number" },
+            "avg": { "type": "number" },
+            "max": { "type": "number" },
+            "lastUpdated": { "type": "string", "format": "date-time" }
+          }
+        },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "sku", "quantity"]
+    },
+    "ServiceOrder": {
+      "title": "Service Order",
+      "description": "A vehicle service job.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerName": { "type": "string" },
+        "vehicleInfo": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "in-progress", "completed", "cancelled"] },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "partId": { "type": "string" },
+              "name": { "type": "string" },
+              "quantity": { "type": "integer" },
+              "unitPrice": { "type": "number" }
+            }
+          }
+        },
+        "laborCost": { "type": "number" },
+        "totalCost": { "type": "number" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerName", "status"]
+    },
+    "Movement": {
+      "title": "Stock Movement",
+      "description": "Log of part additions or removals.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "partId": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["in", "out"] },
+        "quantity": { "type": "integer" },
+        "osId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["partId", "userId", "type", "quantity", "timestamp"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "Scheduled customer service.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "vehicleInfo": { "type": "string" },
+        "serviceType": { "type": "string" },
+        "dateTime": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["scheduled", "confirmed", "completed", "cancelled"] }
+      },
+      "required": ["customerName", "dateTime", "status"]
+    }
+  },
+  "firestore": {
+    "/parts/{partId}": {
+      "schema": "Part",
+      "description": "Collection of automotive parts."
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Collection of customers."
+    },
+    "/serviceOrders/{osId}": {
+      "schema": "ServiceOrder",
+      "description": "Collection of service orders."
+    },
+    "/movements/{movementId}": {
+      "schema": "Movement",
+      "description": "Log of stock movements."
+    },
+    "/appointments/{appointmentId}": {
+      "schema": "Appointment",
+      "description": "Collection of scheduled services."
+    }
+  }
+}
